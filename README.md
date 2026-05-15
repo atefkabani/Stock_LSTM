@@ -1,8 +1,8 @@
+<h1 align="center">📈 LSTM Stock Market Predictor</h1>
+
 <p align="center">
   <img src="banner1.png" alt="LSTM Stock Market Predictor Banner" width="100%">
 </p>
-
-<h1 align="center">📈 LSTM Stock Market Predictor</h1>
 
 <p align="center">
   A deep learning project that uses <b>Long Short-Term Memory (LSTM)</b> neural networks<br>
