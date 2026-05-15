@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="banner.png" alt="LSTM Stock Market Predictor Banner" width="100%">
+  <img src="banner1.png" alt="LSTM Stock Market Predictor Banner" width="100%">
 </p>
 
 <h1 align="center">📈 LSTM Stock Market Predictor</h1>
