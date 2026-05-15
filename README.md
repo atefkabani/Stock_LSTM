@@ -28,7 +28,7 @@
 
 ### Full Dashboard
 
-![LSTM Stock Prediction Dashboard](lstm_stock_prediction.png)
+![LSTM Stock Prediction Dashboard](app.png)
 
 ---
 
@@ -45,14 +45,14 @@ CSV Data → MinMaxScaler → Sliding Window Sequences → train_test_split
 
 ### Model Architecture
 
-| Layer | Type | Output Shape | Parameters |
-|-------|------|-------------|------------|
-| 1 | LSTM (64 units) | (batch, 5, 64) | 16,896 |
-| 2 | Dropout (0.2) | (batch, 5, 64) | 0 |
-| 3 | LSTM (64 units) | (batch, 64) | 33,024 |
-| 4 | Dropout (0.2) | (batch, 64) | 0 |
-| 5 | Dense (ReLU) | (batch, 32) | 2,080 |
-| 6 | Dense (Linear) | (batch, 1) | 33 |
+| Layer | Type            | Output Shape   | Parameters |
+| ----- | --------------- | -------------- | ---------- |
+| 1     | LSTM (64 units) | (batch, 5, 64) | 16,896     |
+| 2     | Dropout (0.2)   | (batch, 5, 64) | 0          |
+| 3     | LSTM (64 units) | (batch, 64)    | 33,024     |
+| 4     | Dropout (0.2)   | (batch, 64)    | 0          |
+| 5     | Dense (ReLU)    | (batch, 32)    | 2,080      |
+| 6     | Dense (Linear)  | (batch, 1)     | 33         |
 
 **Total trainable parameters:** 52,033
 
@@ -123,6 +123,7 @@ CONFIG = {
 ```
 
 **Tuning tips:**
+
 - Increase `lookback` for longer-term pattern recognition (try 10–30 for daily data)
 - Increase `hidden_units` and `num_layers` for larger datasets
 - Lower `learning_rate` if training is unstable
@@ -134,11 +135,11 @@ CONFIG = {
 
 The script generates three outputs in the working directory:
 
-| File | Description |
-|------|-------------|
-| `lstm_stock_prediction.png` | 6-panel visualization dashboard |
-| `lstm_model.keras` | Saved model weights (reloadable) |
-| Console output | Training logs, metrics, and forecast table |
+| File                        | Description                                |
+| --------------------------- | ------------------------------------------ |
+| `lstm_stock_prediction.png` | 6-panel visualization dashboard            |
+| `lstm_model.keras`          | Saved model weights (reloadable)           |
+| Console output              | Training logs, metrics, and forecast table |
 
 ### Dashboard Panels
 
@@ -150,12 +151,12 @@ The script generates three outputs in the working directory:
 
 ### Evaluation Metrics
 
-| Metric | Description |
-|--------|-------------|
-| RMSE | Root Mean Squared Error — penalizes large errors |
-| MAE | Mean Absolute Error — average dollar error |
-| R² | Coefficient of Determination — 1.0 is perfect |
-| MAPE | Mean Absolute Percentage Error — scale-independent accuracy |
+| Metric | Description                                                 |
+| ------ | ----------------------------------------------------------- |
+| RMSE   | Root Mean Squared Error — penalizes large errors            |
+| MAE    | Mean Absolute Error — average dollar error                  |
+| R²     | Coefficient of Determination — 1.0 is perfect               |
+| MAPE   | Mean Absolute Percentage Error — scale-independent accuracy |
 
 ---
 
