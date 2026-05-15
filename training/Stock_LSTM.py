@@ -28,14 +28,14 @@ CONFIG = {
     "hidden_units": 64,       # LSTM units per layer
     "num_layers": 1,          # Stacked LSTM layers
     "dropout": 0.2,           # Dropout rate
-    "epochs": 10,            # Max training epochs
-    "batch_size": 16,         # Mini-batch size
+    "epochs": 100,            # Max training epochs
+    "batch_size": 64,         # Mini-batch size
     "learning_rate": 0.001,   # Initial Adam learning rate
     "test_size": 0.2,         # Fraction for test set (used in train_test_split)
     "forecast_start_date": "1999-11-18",      # Start date for forecasting
     "forecast_days": 10,      # Number of future days to forecast
     "output_dir":   "./models", # Directory to save model and plots
-    "csv_path": "./dataset/A.csv" # Path to your CSV file
+    "csv_path": "./dataset/MSFT.csv" # Path to your CSV file
 }
 
 def load_data(csv_path=None):
