@@ -13,14 +13,14 @@ st.title("📈 LSTM Stock Predictor")
 
 # ---------- Load once, cache ----------
 @st.cache_resource
-def load_artifacts(model_path="lstm_model.keras", pkl_path="lstm_artifacts.pkl"):
+def load_artifacts(model_path="models/lstm_model.keras", pkl_path="models/lstm_artifacts.pkl"):
     model = load_model(model_path)
     with open(pkl_path, "rb") as f:
         art = pickle.load(f)
     return model, art["scaler"], art["config"]["lookback"]
 
 @st.cache_data
-def load_prices(csv_path="A.csv"):
+def load_prices(csv_path="dataset/MSFT.csv"):
     return (pd.read_csv(csv_path, parse_dates=["Date"])
               .sort_values("Date").reset_index(drop=True))
 
@@ -29,7 +29,7 @@ df = load_prices()
 
 # ---------- Sidebar inputs ----------
 st.sidebar.header("Inputs")
-csv_path     = st.sidebar.text_input("CSV path", "A.csv")
+csv_path     = st.sidebar.text_input("CSV path", "dataset/MSFT.csv")
 target_date  = st.sidebar.date_input(
     "Target date",
     value=df["Date"].iloc[-1].date() + pd.Timedelta(days=1),

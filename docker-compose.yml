@@ -1,0 +1,13 @@
+services:
+  app:
+    build: .
+    image: stock-market:latest
+    container_name: stock-market
+    ports:
+      - "8501:8501"
+    # Mount the models folder from the host so you can swap weights
+    # without rebuilding the image. Remove this if you'd rather bake
+    # the model into the image itself.
+    volumes:
+      - ./models:/app/models:ro
+    restart: unless-stopped

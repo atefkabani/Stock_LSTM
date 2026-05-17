@@ -19,8 +19,8 @@ def parse_args():
     p = argparse.ArgumentParser(description="LSTM stock predictor")
     p.add_argument("--date",    required=True,           help="Target date, YYYY-MM-DD")
     p.add_argument("--csv",     default="A.csv",         help="Path to price CSV")
-    p.add_argument("--model",   default="lstm_model.keras")
-    p.add_argument("--artifacts", default="lstm_artifacts.pkl")
+    p.add_argument("--model",   default="models/lstm_model.keras")
+    p.add_argument("--artifacts", default="models/lstm_artifacts.pkl")
     return p.parse_args()
 
 

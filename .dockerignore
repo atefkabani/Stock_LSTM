@@ -1,0 +1,55 @@
+# --- VCS ---
+.git
+.gitignore
+.gitattributes
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+.eggs/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.tox/
+.coverage
+htmlcov/
+
+# --- Virtual envs ---
+.venv/
+venv/
+env/
+ENV/
+
+# --- IDE / editor ---
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# --- Notebooks ---
+.ipynb_checkpoints/
+
+
+
+# --- Logs & artifacts ---
+logs/
+*.log
+mlruns/
+tensorboard/
+
+# --- Docs / repo metadata not needed in the image ---
+README.md
+LICENSE
+docs/
+assets/
+*.md
+
+# --- Docker meta ---
+Dockerfile
+.dockerignore
+docker-compose*.yml

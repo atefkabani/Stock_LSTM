@@ -13,6 +13,7 @@
   <img src="https://img.shields.io/badge/Python-3.9%2B-blue?logo=python&logoColor=white" alt="Python">
   <img src="https://img.shields.io/badge/TensorFlow-2.15%2B-orange?logo=tensorflow&logoColor=white" alt="TensorFlow">
   <img src="https://img.shields.io/badge/scikit--learn-1.3%2B-f7931e?logo=scikit-learn&logoColor=white" alt="scikit-learn">
+  <img src="https://img.shields.io/badge/Docker-ready-2496ED?logo=docker&logoColor=white" alt="Docker">
   <img src="https://img.shields.io/badge/License-MIT-green" alt="License">
 </p>
 
@@ -104,6 +105,106 @@ if __name__ == "__main__":
 
 ---
 
+## 🐳 Run with Docker
+
+The repository ships with a production-ready `Dockerfile` that bundles the Streamlit app, the trained model, and the dataset into a single image. This is the easiest way to run the predictor without managing a local Python environment.
+
+### Prerequisites
+
+- [Docker](https://docs.docker.com/get-docker/) 20.10+
+- (Optional) [Docker Compose](https://docs.docker.com/compose/) for the one-line workflow below
+
+### Build the image
+
+From the repository root:
+
+```bash
+docker build -t lstm-stock-predictor .
+```
+
+### Run the container
+
+```bash
+docker run --rm -p 8501:8501 --name lstm-app lstm-stock-predictor
+```
+
+Then open **[http://localhost:8501](http://localhost:8501)** in your browser.
+
+### Mount your own data and models
+
+If you'd rather not bake the dataset and model weights into the image, mount them at runtime:
+
+```bash
+docker run --rm -p 8501:8501 \
+  -v "$(pwd)/dataset:/app/dataset" \
+  -v "$(pwd)/models:/app/models" \
+  lstm-stock-predictor
+```
+
+> On Windows PowerShell, replace `$(pwd)` with `${PWD}`.
+
+### Run the CLI predictor instead of the web app
+
+The default `CMD` launches Streamlit, but you can override it to run any script in the image:
+
+```bash
+docker run --rm lstm-stock-predictor python predict.py --date 2025-01-15
+```
+
+### Docker Compose (optional)
+
+Create a `docker-compose.yml`:
+
+```yaml
+services:
+  app:
+    build: .
+    image: lstm-stock-predictor
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./dataset:/app/dataset
+      - ./models:/app/models
+    restart: unless-stopped
+```
+
+Then:
+
+```bash
+docker compose up --build
+```
+
+### Image layout
+
+Inside the container the project is rooted at `/app`, so all relative paths in the code resolve as expected:
+
+```
+/app/
+├── app/app.py              # Streamlit entrypoint
+├── dataset/MSFT.csv        # Training / inference data
+├── models/lstm_model.keras
+└── models/lstm_artifacts.pkl
+```
+
+### Troubleshooting
+
+| Symptom                                                           | Likely cause                                                                                            | Fix                                                                                                                       |
+| ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `FileNotFoundError: 'dataset/MSFT.csv'`                           | The `dataset/` folder is listed in `.dockerignore`, so `COPY . .` skipped it.                           | Remove the `dataset/` (or `*.csv`) entry from `.dockerignore` and rebuild, **or** mount the folder with `-v` (see above). |
+| `FileNotFoundError: 'models/lstm_model.keras'`                    | Same issue for `models/`.                                                                               | Same fix — un-ignore the folder or mount it.                                                                              |
+| Port 8501 already in use                                          | Another service (often a previous container) is bound to 8501.                                          | Run on a different host port: `-p 8502:8501`.                                                                             |
+| Healthcheck shows `unhealthy`                                     | The app is still warming up (TensorFlow model load takes a few seconds).                                | Wait ~20 s — the `--start-period=20s` grace window allows for this.                                                       |
+
+### Inspect what's inside the image
+
+Useful when debugging missing files:
+
+```bash
+docker run --rm lstm-stock-predictor ls -la /app /app/dataset /app/models
+```
+
+---
+
 ## ⚙️ Configuration
 
 All hyperparameters are in the `CONFIG` dictionary at the top of the script:
@@ -179,8 +280,17 @@ prediction = model.predict(sequence)
 
 ```
 lstm-stock-predictor/
-├── lstm_stock_predictor.py     # Main script (data, model, training, plots)
+├── app/
+│   └── app.py                  # Streamlit web app
+├── dataset/
+│   └── MSFT.csv                # Training / inference data
+├── models/
+│   ├── lstm_model.keras        # Saved model weights
+│   └── lstm_artifacts.pkl      # Scaler + config
+├── lstm_stock_predictor.py     # Training script (data, model, training, plots)
 ├── requirements.txt            # Python dependencies
+├── Dockerfile                  # Container build definition
+├── .dockerignore               # Build-context excludes
 ├── README.md                   # This file
 ├── lstm_stock_prediction.png   # Generated chart (after running)
 └── lstm_model.keras            # Saved model (after running)
@@ -195,6 +305,8 @@ lstm-stock-predictor/
 - **[pandas](https://pandas.pydata.org/)** — data loading and date handling
 - **[NumPy](https://numpy.org/)** — numerical operations
 - **[Matplotlib](https://matplotlib.org/)** — visualization dashboard
+- **[Streamlit](https://streamlit.io/)** — interactive web dashboard
+- **[Docker](https://www.docker.com/)** — reproducible, portable deployment
 
 ---
 
